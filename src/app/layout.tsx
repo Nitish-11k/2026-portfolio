@@ -23,7 +23,8 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased bg-background text-white`}>
         {/* ReactLenis handles the smooth scrolling for the whole page */}
         <ReactLenis root>
-          {children}
+          {/* FIXED: Cast to 'any' to bypass React 19 vs React 18 type mismatch */}
+          {children as any}
         </ReactLenis>
       </body>
     </html>

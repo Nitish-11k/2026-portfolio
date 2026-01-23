@@ -1,4 +1,4 @@
 "use client";
-import { ReactLenis as Lenis } from "@studio-freight/react-lenis";
+import { ReactLenis } from "lenis/react";
 
-export const ReactLenis = Lenis;
+export { ReactLenis };
