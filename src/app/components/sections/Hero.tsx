@@ -14,19 +14,18 @@ import {
 
 const roles = ["Backend Engineer", "System Architect", "Java Specialist"];
 
-// FIXED: Static Pattern instead of Math.random()
-const barcodePattern = [40, 70, 30, 80, 50, 90, 20, 60, 40, 80, 50, 30, 70, 40, 90, 60, 30, 50];
+// FIXED: Static values to prevent Hydration Mismatch (No Math.random)
+const barcodeHeights = [20, 60, 30, 80, 50, 90, 20, 70, 40, 60, 30, 80, 50, 90, 20, 70, 40, 60];
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
-  const [mounted, setMounted] = useState(false);
 
-  // Scroll Handler to remove # from URL
+  // --- SCROLL HANDLER (Removes # from URL) ---
   const scrollToProjects = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const element = document.getElementById("projects");
     if (element) {
-      const offset = 80;
+      const offset = 80; // Navbar offset
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -39,6 +38,7 @@ export default function Hero() {
     }
   };
 
+  // --- 3D TILT LOGIC ---
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x, { stiffness: 50, damping: 20 });
@@ -64,7 +64,6 @@ export default function Hero() {
   };
 
   useEffect(() => {
-    setMounted(true);
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % roles.length);
     }, 2500);
@@ -230,10 +229,9 @@ export default function Hero() {
                     <p>AUTH_TOKEN: ACTIVE</p>
                     <p>REF: JAVA_SPRING_MB</p>
                   </div>
-                  
-                  {/* FIXED BARCODE */}
+                  {/* Fixed Barcode - No Randomness */}
                   <div className="flex gap-[2px] h-8 items-end opacity-30">
-                    {barcodePattern.map((h, i) => (
+                    {barcodeHeights.map((h, i) => (
                       <div 
                         key={i} 
                         className="w-[2px] bg-white" 
