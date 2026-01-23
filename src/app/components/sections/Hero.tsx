@@ -14,18 +14,19 @@ import {
 
 const roles = ["Backend Engineer", "System Architect", "Java Specialist"];
 
-// Static barcode heights to prevent hydration mismatch
-const barcodeHeights = [20, 60, 30, 80, 50, 90, 20, 70, 40, 60, 30, 80, 50, 90, 20, 70, 40, 60];
+// FIXED: Static Pattern instead of Math.random()
+const barcodePattern = [40, 70, 30, 80, 50, 90, 20, 60, 40, 80, 50, 30, 70, 40, 90, 60, 30, 50];
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
-  // --- SCROLL HANDLER (Removes # form URL) ---
+  // Scroll Handler to remove # from URL
   const scrollToProjects = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault(); // Prevents URL change
+    e.preventDefault();
     const element = document.getElementById("projects");
     if (element) {
-      const offset = 80; // Navbar offset
+      const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -38,13 +39,10 @@ export default function Hero() {
     }
   };
 
-  // --- 3D TILT & MOUSE TRACKING LOGIC ---
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
   const mouseXSpring = useSpring(x, { stiffness: 50, damping: 20 });
   const mouseYSpring = useSpring(y, { stiffness: 50, damping: 20 });
-
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
 
@@ -54,10 +52,8 @@ export default function Hero() {
     const height = rect.height;
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-    
     const xPct = mouseX / width - 0.5;
     const yPct = mouseY / height - 0.5;
-    
     x.set(xPct);
     y.set(yPct);
   };
@@ -68,6 +64,7 @@ export default function Hero() {
   };
 
   useEffect(() => {
+    setMounted(true);
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % roles.length);
     }, 2500);
@@ -76,14 +73,12 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] pt-20 md:pt-0">
-      
-      {/* Background Ambience */}
       <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center z-10">
         
-        {/* LEFT SIDE: TEXT */}
+        {/* Left Side Content */}
         <div className="text-center md:text-left order-2 md:order-1">
           <motion.div 
             initial={{ opacity: 0, x: -20 }} 
@@ -136,7 +131,6 @@ export default function Hero() {
             transition={{ delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
           >
-            {/* UPDATED BUTTON: Prevents URL Hashtag */}
             <a 
               href="#projects" 
               onClick={scrollToProjects}
@@ -144,16 +138,14 @@ export default function Hero() {
             >
               VIEW WORK <ArrowRight size={18} />
             </a>
-            
             <a href="/NitishResume2026Updated.pdf" target="_blank" className="px-8 py-4 border border-white/10 text-white font-bold rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
               RESUME <Eye size={18} />
             </a>
           </motion.div>
         </div>
 
-        {/* RIGHT SIDE: PREMIUM ID CARD */}
+        {/* Right Side ID Card */}
         <div className="relative flex justify-center items-center order-1 md:order-2 perspective-1000">
-          
           <motion.div 
             initial={{ height: 0 }}
             animate={{ height: 140 }}
@@ -163,11 +155,7 @@ export default function Hero() {
           <motion.div
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            style={{ 
-              rotateX, 
-              rotateY, 
-              transformStyle: "preserve-3d" 
-            }}
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -175,16 +163,12 @@ export default function Hero() {
           >
             <div className="relative w-[340px] h-[520px] bg-neutral-900/90 border border-white/20 rounded-[2.5rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.9)] backdrop-blur-xl">
               
-              {/* Dynamic Glare */}
               <div 
                 className="absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                style={{ 
-                  background: `radial-gradient(circle at ${(mouseXSpring.get() + 0.5) * 100}% ${(mouseYSpring.get() + 0.5) * 100}%, rgba(255,255,255,0.12) 0%, transparent 60%)`
-                }}
+                style={{ background: `radial-gradient(circle at ${(mouseXSpring.get() + 0.5) * 100}% ${(mouseYSpring.get() + 0.5) * 100}%, rgba(255,255,255,0.12) 0%, transparent 60%)` }}
               />
 
               <div className="p-8 flex flex-col items-center h-full relative z-20">
-                
                 <div className="w-full flex justify-between items-center mb-10">
                   <Wifi size={20} className="text-blue-500 animate-pulse" />
                   <div className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-md text-[10px] text-blue-400 font-mono font-bold tracking-widest">
@@ -246,9 +230,10 @@ export default function Hero() {
                     <p>AUTH_TOKEN: ACTIVE</p>
                     <p>REF: JAVA_SPRING_MB</p>
                   </div>
-                  {/* Fixed Barcode - No Random */}
+                  
+                  {/* FIXED BARCODE */}
                   <div className="flex gap-[2px] h-8 items-end opacity-30">
-                    {barcodeHeights.map((h, i) => (
+                    {barcodePattern.map((h, i) => (
                       <div 
                         key={i} 
                         className="w-[2px] bg-white" 
@@ -258,7 +243,6 @@ export default function Hero() {
                   </div>
                 </div>
               </div>
-
               <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-600 via-purple-600 to-transparent" />
             </div>
           </motion.div>
