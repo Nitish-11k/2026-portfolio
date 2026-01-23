@@ -54,7 +54,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Email</p>
-                    <a href="mailto:hello@yourdomain.com" className="text-white hover:text-blue-400 transition-colors">nitishkr0214@gmail.com</a>
+                    {/* CRITICAL FIX: Updated mailto link */}
+                    <a href="mailto:nitishkr0214@gmail.com" className="text-white hover:text-blue-400 transition-colors">nitishkr0214@gmail.com</a>
                   </div>
                 </div>
                 
