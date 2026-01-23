@@ -1,27 +1,30 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import Image from "next/image";
 import { 
   ArrowRight, 
   Eye, 
-  ScanLine, 
   Wifi, 
   ShieldCheck, 
   Github, 
   Linkedin, 
-  Twitter 
+  Twitter,
+  ScanLine,
+  Terminal,
+  Cpu
 } from "lucide-react";
 
 const roles = ["Backend Engineer", "System Architect", "Java Specialist"];
 
-// FIXED: Static values prevent the Hydration Error (Removed Math.random)
+// Fixed Barcode Pattern
 const barcodeHeights = [20, 60, 30, 80, 50, 90, 20, 70, 40, 60, 30, 80, 50, 90, 20, 70, 40, 60];
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
-  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Scroll Handler (Removes # from URL)
+  // --- SCROLL HANDLER ---
   const scrollToProjects = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const element = document.getElementById("projects");
@@ -31,14 +34,11 @@ export default function Hero() {
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
       const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
   };
 
+  // --- 3D TILT LOGIC ---
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x, { stiffness: 50, damping: 20 });
@@ -64,13 +64,92 @@ export default function Hero() {
   };
 
   useEffect(() => {
-    setMounted(true);
-    const timer = setInterval(() => {
+    const roleTimer = setInterval(() => {
       setIndex((prev) => (prev + 1) % roles.length);
     }, 2500);
-    return () => clearInterval(timer);
+
+    // Loading duration
+    const loadTimer = setTimeout(() => {
+      setLoading(false);
+    }, 3500);
+
+    return () => {
+      clearInterval(roleTimer);
+      clearTimeout(loadTimer);
+    };
   }, []);
 
+  // --- LOADING SCREEN (Code-Only "System Runner") ---
+  if (loading) {
+    return (
+      <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden font-mono">
+        
+        {/* Animated Grid Background */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+        </div>
+
+        {/* Central Tech Loader */}
+        <div className="relative">
+          {/* Rotating Rings */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            className="w-32 h-32 border-2 border-dashed border-blue-500/30 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          />
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+            className="w-48 h-48 border border-blue-500/20 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          />
+
+          {/* Glitching Text/Icon */}
+          <div className="relative z-10 flex flex-col items-center gap-4">
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="bg-blue-500/10 p-6 rounded-2xl border border-blue-500/50 backdrop-blur-md"
+            >
+              <Cpu size={48} className="text-blue-400" />
+            </motion.div>
+            
+            <div className="flex flex-col items-center mt-8">
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-blue-400 text-lg tracking-[0.2em] uppercase"
+              >
+                Portfolio
+              </motion.p>
+              
+              <div className="flex gap-1 mt-2 h-1">
+                {[...Array(3)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ height: [4, 12, 4], opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                    className="w-1 bg-blue-500 rounded-full"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Bar at Bottom */}
+        <div className="absolute bottom-12 w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+          <motion.div 
+            initial={{ width: "0%" }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 3.5, ease: "easeInOut" }}
+            className="h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)]"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // --- HERO SECTION ---
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] pt-20 md:pt-0">
       <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
@@ -176,12 +255,19 @@ export default function Hero() {
                   </div>
                 </div>
 
+                {/* ID CARD AVATAR (Still using your static image for the ID card) */}
                 <div className="relative w-36 h-36 mb-6">
                   <div className="absolute inset-0 rounded-full border border-dashed border-blue-500/30 animate-[spin_15s_linear_infinite]" />
-                  <div className="absolute inset-4 overflow-hidden rounded-full bg-neutral-800 flex items-center justify-center border border-white/5 shadow-2xl">
-                    <ScanLine size={50} className="text-blue-500/40 group-hover:text-blue-400 transition-colors duration-500" />
+                  <div className="absolute inset-4 overflow-hidden rounded-full bg-neutral-800 flex items-center justify-center border border-white/5 shadow-2xl relative">
+                    <Image 
+                      src="/image.webp" 
+                      alt="Nitish Avatar" 
+                      fill 
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-blue-500/10 mix-blend-overlay" />
                   </div>
-                  <div className="absolute bottom-1 right-1 w-7 h-7 bg-blue-500 rounded-full border-4 border-neutral-950 flex items-center justify-center shadow-lg">
+                  <div className="absolute bottom-1 right-1 w-7 h-7 bg-blue-500 rounded-full border-4 border-neutral-950 flex items-center justify-center shadow-lg z-20">
                     <ShieldCheck size={14} className="text-white" />
                   </div>
                 </div>
@@ -230,8 +316,6 @@ export default function Hero() {
                     <p>AUTH_TOKEN: ACTIVE</p>
                     <p>REF: JAVA_SPRING_MB</p>
                   </div>
-                  
-                  {/* FIXED BARCODE */}
                   <div className="flex gap-[2px] h-8 items-end opacity-30">
                     {barcodeHeights.map((h, i) => (
                       <div 
