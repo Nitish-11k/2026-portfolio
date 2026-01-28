@@ -9,10 +9,7 @@ import {
   ShieldCheck, 
   Github, 
   Linkedin, 
-  Twitter,
-  ScanLine,
-  Terminal,
-  Cpu
+  Twitter
 } from "lucide-react";
 
 const roles = ["Backend Engineer", "System Architect", "Java Specialist"];
@@ -71,7 +68,7 @@ export default function Hero() {
     // Loading duration
     const loadTimer = setTimeout(() => {
       setLoading(false);
-    }, 3500);
+    }, 4000); // Increased slightly to enjoy the leaning animation
 
     return () => {
       clearInterval(roleTimer);
@@ -79,259 +76,250 @@ export default function Hero() {
     };
   }, []);
 
-  // --- LOADING SCREEN (Code-Only "System Runner") ---
-  if (loading) {
-    return (
-      <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden font-mono">
-        
-        {/* Animated Grid Background */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-        </div>
-
-        {/* Central Tech Loader */}
-        <div className="relative">
-          {/* Rotating Rings */}
+  return (
+    <>
+      {/* --- LOADING SCREEN (Keva Style + Leaning Image) --- */}
+      <AnimatePresence>
+        {loading && (
           <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            className="w-32 h-32 border-2 border-dashed border-blue-500/30 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          />
-          <motion.div
-            animate={{ rotate: -360 }}
-            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-            className="w-48 h-48 border border-blue-500/20 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          />
+            key="loader"
+            initial={{ opacity: 1 }}
+            exit={{ y: "-100%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
+            className="fixed inset-0 z-[100] bg-[#030303] flex flex-col items-center justify-center overflow-hidden"
+          >
+             <div className="flex flex-col items-center relative z-20">
+                {/* Small "it's" text */}
+                <motion.span 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="text-4xl md:text-6xl font-light text-zinc-300 mb-2 tracking-tighter lowercase self-center font-sans"
+                >
+                  it&apos;s
+                </motion.span>
+                
+                {/* Text Container with Leaning Image */}
+                <div className="relative">
+                    {/* The Image Leaning on 'N' */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+                        className="absolute bottom-0 -left-[50px] md:-left-[90px] z-10 w-[90px] md:w-[160px]"
+                    >
+                        <Image
+                            src="/Nickbg.png"
+                            alt="Leaning Pose"
+                            width={300}
+                            height={600}
+                            className="object-contain drop-shadow-2xl"
+                            priority
+                        />
+                    </motion.div>
 
-          {/* Glitching Text/Icon */}
-          <div className="relative z-10 flex flex-col items-center gap-4">
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="bg-blue-500/10 p-6 rounded-2xl border border-blue-500/50 backdrop-blur-md"
+                    {/* Large "NITISH" text */}
+                    <motion.div
+                      initial={{ clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)", y: 20 }}
+                      animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)", y: 0 }}
+                      transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <h1 className="text-[100px] md:text-[200px] font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-indigo-300 drop-shadow-2xl leading-[0.85] tracking-tighter font-sans pl-4">
+                        NITISH
+                      </h1>
+                    </motion.div>
+                </div>
+             </div>
+
+             {/* Background Glow for Loader */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+
+      {/* --- HERO SECTION --- */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] pt-20 md:pt-0">
+        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center z-10">
+          
+          {/* Left Side Content */}
+          <div className="text-center md:text-left order-2 md:order-1">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ duration: 0.8 }} 
+              className="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-violet-500/10 border border-violet-500/20 text-[10px] font-mono text-violet-400 mb-6 uppercase tracking-tighter"
             >
-              <Cpu size={48} className="text-blue-400" />
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
+              </span>
+              Available for Hire 2026
             </motion.div>
             
-            <div className="flex flex-col items-center mt-8">
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-blue-400 text-lg tracking-[0.2em] uppercase"
-              >
-                Portfolio
-              </motion.p>
-              
-              <div className="flex gap-1 mt-2 h-1">
-                {[...Array(3)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    animate={{ height: [4, 12, 4], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                    className="w-1 bg-blue-500 rounded-full"
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Progress Bar at Bottom */}
-        <div className="absolute bottom-12 w-64 h-1 bg-white/10 rounded-full overflow-hidden">
-          <motion.div 
-            initial={{ width: "0%" }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 3.5, ease: "easeInOut" }}
-            className="h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)]"
-          />
-        </div>
-      </div>
-    );
-  }
-
-  // --- HERO SECTION ---
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] pt-20 md:pt-0">
-      <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center z-10">
-        
-        {/* Left Side Content */}
-        <div className="text-center md:text-left order-2 md:order-1">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }} 
-            animate={{ opacity: 1, x: 0 }} 
-            transition={{ duration: 0.8 }} 
-            className="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono text-blue-400 mb-6 uppercase tracking-tighter"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-            </span>
-            Available for Hire 2026
-          </motion.div>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-6xl md:text-8xl font-black tracking-tighter mb-6 text-white"
-          >
-            Nitish <span className="text-neutral-600">Kumar</span>
-          </motion.h1>
-
-          <div className="h-10 mb-8 flex justify-center md:justify-start items-center">
-            <AnimatePresence mode="wait">
-              <motion.h2 
-                key={roles[index]}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="text-2xl md:text-3xl font-mono text-blue-500 uppercase tracking-widest font-bold"
-              >
-                {roles[index]}
-              </motion.h2>
-            </AnimatePresence>
-          </div>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-gray-400 max-w-md mx-auto md:mx-0 leading-relaxed mb-10 text-lg"
-          >
-            Final-year CSE student building high-performance <span className="text-white">Java Spring Boot</span> backends and distributed systems.
-          </motion.p>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
-          >
-            <a 
-              href="#projects" 
-              onClick={scrollToProjects}
-              className="px-8 py-4 bg-white text-black font-bold rounded-xl hover:scale-105 transition-transform flex items-center justify-center gap-2 shadow-xl"
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-6xl md:text-8xl font-black tracking-tighter mb-6 text-white font-sans"
             >
-              VIEW WORK <ArrowRight size={18} />
-            </a>
-            <a href="/NitishResume2026Updated.pdf" target="_blank" className="px-8 py-4 border border-white/10 text-white font-bold rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
-              RESUME <Eye size={18} />
-            </a>
-          </motion.div>
-        </div>
+              Nitish <span className="text-neutral-600">Kumar</span>
+            </motion.h1>
 
-        {/* Right Side ID Card */}
-        <div className="relative flex justify-center items-center order-1 md:order-2 perspective-1000">
-          <motion.div 
-            initial={{ height: 0 }}
-            animate={{ height: 140 }}
-            className="absolute -top-32 w-[2px] bg-gradient-to-b from-transparent via-neutral-700 to-neutral-400 z-0"
-          />
+            <div className="h-10 mb-8 flex justify-center md:justify-start items-center">
+              <AnimatePresence mode="wait">
+                <motion.h2 
+                  key={roles[index]}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="text-2xl md:text-3xl font-mono text-violet-500 uppercase tracking-widest font-bold"
+                >
+                  {roles[index]}
+                </motion.h2>
+              </AnimatePresence>
+            </div>
 
-          <motion.div
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 80, damping: 15 }}
-            className="relative group cursor-pointer"
-          >
-            <div className="relative w-[340px] h-[520px] bg-neutral-900/90 border border-white/20 rounded-[2.5rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.9)] backdrop-blur-xl">
-              
-              <div 
-                className="absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                style={{ background: `radial-gradient(circle at ${(mouseXSpring.get() + 0.5) * 100}% ${(mouseYSpring.get() + 0.5) * 100}%, rgba(255,255,255,0.12) 0%, transparent 60%)` }}
-              />
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-gray-400 max-w-md mx-auto md:mx-0 leading-relaxed mb-10 text-lg"
+            >
+              Final-year CSE student building high-performance <span className="text-white">Java Spring Boot</span> backends and distributed systems.
+            </motion.p>
 
-              <div className="p-8 flex flex-col items-center h-full relative z-20">
-                <div className="w-full flex justify-between items-center mb-10">
-                  <Wifi size={20} className="text-blue-500 animate-pulse" />
-                  <div className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-md text-[10px] text-blue-400 font-mono font-bold tracking-widest">
-                    SYSTEM ACCESS: LVL 4
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+            >
+              <a 
+                href="#projects" 
+                onClick={scrollToProjects}
+                className="px-8 py-4 bg-white text-black font-bold rounded-xl hover:scale-105 transition-transform flex items-center justify-center gap-2 shadow-xl"
+              >
+                VIEW WORK <ArrowRight size={18} />
+              </a>
+              <a href="/NitishResume2026Updated.pdf" target="_blank" className="px-8 py-4 border border-white/10 text-white font-bold rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                RESUME <Eye size={18} />
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right Side ID Card */}
+          <div className="relative flex justify-center items-center order-1 md:order-2 perspective-1000">
+            <motion.div 
+              initial={{ height: 0 }}
+              animate={{ height: 140 }}
+              className="absolute -top-32 w-[2px] bg-gradient-to-b from-transparent via-neutral-700 to-neutral-400 z-0"
+            />
+
+            <motion.div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 80, damping: 15 }}
+              className="relative group cursor-pointer"
+            >
+              <div className="relative w-[340px] h-[520px] bg-neutral-900/90 border border-white/20 rounded-[2.5rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.9)] backdrop-blur-xl">
+                
+                <div 
+                  className="absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  style={{ background: `radial-gradient(circle at ${(mouseXSpring.get() + 0.5) * 100}% ${(mouseYSpring.get() + 0.5) * 100}%, rgba(255,255,255,0.12) 0%, transparent 60%)` }}
+                />
+
+                <div className="p-8 flex flex-col items-center h-full relative z-20">
+                  <div className="w-full flex justify-between items-center mb-10">
+                    <Wifi size={20} className="text-violet-500 animate-pulse" />
+                    <div className="px-3 py-1 bg-violet-500/10 border border-violet-500/20 rounded-md text-[10px] text-violet-400 font-mono font-bold tracking-widest">
+                      SYSTEM ACCESS: LVL 4
+                    </div>
                   </div>
-                </div>
 
-                {/* ID CARD AVATAR (Still using your static image for the ID card) */}
-                <div className="relative w-36 h-36 mb-6">
-                  <div className="absolute inset-0 rounded-full border border-dashed border-blue-500/30 animate-[spin_15s_linear_infinite]" />
-                  <div className="absolute inset-4 overflow-hidden rounded-full bg-neutral-800 flex items-center justify-center border border-white/5 shadow-2xl relative">
-                    <Image 
-                      src="/image.webp" 
-                      alt="Nitish Avatar" 
-                      fill 
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-blue-500/10 mix-blend-overlay" />
-                  </div>
-                  <div className="absolute bottom-1 right-1 w-7 h-7 bg-blue-500 rounded-full border-4 border-neutral-950 flex items-center justify-center shadow-lg z-20">
-                    <ShieldCheck size={14} className="text-white" />
-                  </div>
-                </div>
-
-                <h3 className="text-3xl font-black text-white tracking-tighter uppercase mb-1">
-                  Nitish Kumar
-                </h3>
-                <p className="text-blue-500 font-mono text-[10px] tracking-[0.4em] uppercase mb-8">
-                  Backend Engineer
-                </p>
-
-                <div className="flex gap-4 mb-10">
-                  {[
-                    { icon: <Github size={20} />, href: "https://github.com/Nitish-11k" },
-                    { icon: <Linkedin size={20} />, href: "https://www.linkedin.com/in/nitish-11k/" },
-                    { icon: <Twitter size={20} />, href: "https://www.x.com/nitishk0014" }
-                  ].map((social, i) => (
-                    <motion.a
-                      key={i}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.15, y: -4 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="p-3 bg-white/5 border border-white/10 rounded-2xl text-neutral-400 hover:text-white hover:bg-blue-600/20 hover:border-blue-500/40 transition-all pointer-events-auto"
-                    >
-                      {social.icon}
-                    </motion.a>
-                  ))}
-                </div>
-
-                <div className="w-full flex justify-between items-center p-4 bg-white/[0.03] rounded-2xl border border-white/5 mb-6">
-                  <div className="w-12 h-9 bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 rounded shadow-inner flex flex-col gap-1.5 p-2 opacity-90">
-                    <div className="h-[1.5px] w-full bg-black/20" />
-                    <div className="h-[1.5px] w-full bg-black/20" />
-                    <div className="h-[1.5px] w-full bg-black/20" />
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] text-neutral-500 font-mono uppercase">Node Instance</p>
-                    <p className="text-xs text-white font-mono font-bold tracking-tighter">GGSIPU_CSE_2026</p>
-                  </div>
-                </div>
-
-                <div className="mt-auto w-full pt-4 border-t border-white/5 flex justify-between items-end">
-                  <div className="font-mono text-[8px] text-neutral-600 leading-tight">
-                    <p>AUTH_TOKEN: ACTIVE</p>
-                    <p>REF: JAVA_SPRING_MB</p>
-                  </div>
-                  <div className="flex gap-[2px] h-8 items-end opacity-30">
-                    {barcodeHeights.map((h, i) => (
-                      <div 
-                        key={i} 
-                        className="w-[2px] bg-white" 
-                        style={{ height: `${h}%` }} 
+                  {/* ID CARD AVATAR */}
+                  <div className="relative w-36 h-36 mb-6">
+                    <div className="absolute inset-0 rounded-full border border-dashed border-violet-500/30 animate-[spin_15s_linear_infinite]" />
+                    <div className="absolute inset-4 overflow-hidden rounded-full bg-neutral-800 flex items-center justify-center border border-white/5 shadow-2xl relative">
+                      <Image 
+                        src="/Nickbg.jpg" 
+                        alt="Nitish Avatar" 
+                        fill 
+                        className="object-cover"
                       />
+                      <div className="absolute inset-0 bg-violet-500/10 mix-blend-overlay" />
+                    </div>
+                    <div className="absolute bottom-1 right-1 w-7 h-7 bg-violet-500 rounded-full border-4 border-neutral-950 flex items-center justify-center shadow-lg z-20">
+                      <ShieldCheck size={14} className="text-white" />
+                    </div>
+                  </div>
+
+                  <h3 className="text-3xl font-black text-white tracking-tighter uppercase mb-1">
+                    Nitish Kumar
+                  </h3>
+                  <p className="text-violet-500 font-mono text-[10px] tracking-[0.4em] uppercase mb-8">
+                    Backend Engineer
+                  </p>
+
+                  <div className="flex gap-4 mb-10">
+                    {[
+                      { icon: <Github size={20} />, href: "https://github.com/Nitish-11k" },
+                      { icon: <Linkedin size={20} />, href: "https://www.linkedin.com/in/nitish-11k/" },
+                      { icon: <Twitter size={20} />, href: "https://www.x.com/nitishk0014" }
+                    ].map((social, i) => (
+                      <motion.a
+                        key={i}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.15, y: -4 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="p-3 bg-white/5 border border-white/10 rounded-2xl text-neutral-400 hover:text-white hover:bg-violet-600/20 hover:border-violet-500/40 transition-all pointer-events-auto"
+                      >
+                        {social.icon}
+                      </motion.a>
                     ))}
                   </div>
+
+                  <div className="w-full flex justify-between items-center p-4 bg-white/[0.03] rounded-2xl border border-white/5 mb-6">
+                    <div className="w-12 h-9 bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 rounded shadow-inner flex flex-col gap-1.5 p-2 opacity-90">
+                      <div className="h-[1.5px] w-full bg-black/20" />
+                      <div className="h-[1.5px] w-full bg-black/20" />
+                      <div className="h-[1.5px] w-full bg-black/20" />
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] text-neutral-500 font-mono uppercase">Node Instance</p>
+                      <p className="text-xs text-white font-mono font-bold tracking-tighter">GGSIPU_CSE_2026</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-auto w-full pt-4 border-t border-white/5 flex justify-between items-end">
+                    <div className="font-mono text-[8px] text-neutral-600 leading-tight">
+                      <p>AUTH_TOKEN: ACTIVE</p>
+                      <p>REF: JAVA_SPRING_MB</p>
+                    </div>
+                    <div className="flex gap-[2px] h-8 items-end opacity-30">
+                      {barcodeHeights.map((h, i) => (
+                        <div 
+                          key={i} 
+                          className="w-[2px] bg-white" 
+                          style={{ height: `${h}%` }} 
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
+                <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-violet-600 via-purple-600 to-transparent" />
               </div>
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-600 via-purple-600 to-transparent" />
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
